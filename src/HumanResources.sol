@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.24;
 
-// Import necessary interfaces and libraries
-import "lib/interfaces/IERC20.sol";
 import "src/interfaces/IHumanResources.sol";
-import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
-import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-import "@zksync/contracts/l1-contracts/contracts/bridge/interfaces/IWETH9.sol";
+import "@openzeppelin/contracts/interfaces/IERC20.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
+import "@zksync/contracts/l1-contracts/contracts/bridge/interfaces/IWETH9.sol";
+import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
 
 contract HumanResources is IHumanResources, ReentrancyGuard {
     // Constants and immutable variables
