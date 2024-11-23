@@ -2,7 +2,7 @@
 pragma solidity ^0.8.24;
 
 // Import necessary interfaces and libraries
-import "src/interfaces/IERC20.sol";
+import "lib/interfaces/IERC20.sol";
 import "src/interfaces/IHumanResources.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";

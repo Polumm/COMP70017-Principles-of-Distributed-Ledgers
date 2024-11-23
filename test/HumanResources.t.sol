@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "forge-std/Test.sol";
 import "src/HumanResources.sol";
-import "src/interfaces/IERC20.sol";
+import "lib/interfaces/IERC20.sol";
 import "src/interfaces/IHumanResources.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
 import "@zksync/contracts/l1-contracts/contracts/bridge/interfaces/IWETH9.sol";
