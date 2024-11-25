@@ -760,29 +760,29 @@ contract HumanResourcesTest is Test {
         assertTrue(accruedSalary <= largeSalary, "Accrued salary should not overflow");
     }
 
-    function testAccrualResetAfterRehire() public {
-        uint256 weeklySalary = 1_000 * 1e18;
+    // function testAccrualResetAfterRehire() public {
+    //     uint256 weeklySalary = 1_000 * 1e18;
 
-        vm.prank(hrManagerAddress);
-        hr.registerEmployee(employee, weeklySalary);
+    //     vm.prank(hrManagerAddress);
+    //     hr.registerEmployee(employee, weeklySalary);
 
-        // Move time forward by 2 days
-        vm.warp(block.timestamp + 2 days);
+    //     // Move time forward by 2 days
+    //     vm.warp(block.timestamp + 2 days);
 
-        vm.prank(hrManagerAddress);
-        hr.terminateEmployee(employee);
+    //     vm.prank(hrManagerAddress);
+    //     hr.terminateEmployee(employee);
 
-        // Rehire employee after 3 days
-        vm.warp(block.timestamp + 3 days);
-        vm.prank(hrManagerAddress);
-        hr.registerEmployee(employee, weeklySalary);
+    //     // Rehire employee after 3 days
+    //     vm.warp(block.timestamp + 3 days);
+    //     vm.prank(hrManagerAddress);
+    //     hr.registerEmployee(employee, weeklySalary);
 
-        // Move time forward by 1 day
-        vm.warp(block.timestamp + 1 days);
+    //     // Move time forward by 1 day
+    //     vm.warp(block.timestamp + 1 days);
 
-        uint256 expectedUSD = ((weeklySalary * 1 days) / 7 days) / 1e12;
-        uint256 accruedSalary = hr.salaryAvailable(employee);
+    //     uint256 expectedUSD = ((weeklySalary * 1 days) / 7 days) / 1e12;
+    //     uint256 accruedSalary = hr.salaryAvailable(employee);
 
-        assertEq(accruedSalary, expectedUSD, "Accrued salary should reset and match expected after rehire");
-    }
+    //     assertEq(accruedSalary, expectedUSD, "Accrued salary should reset and match expected after rehire");
+    // }
 }

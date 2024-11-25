@@ -1,0 +1,1 @@
+[{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"submitter","type":"address"},{"indexed":true,"internalType":"address","name":"submission","type":"address"}],"name":"Submission","type":"event"},{"inputs":[{"internalType":"address","name":"submission","type":"address"}],"name":"submit","outputs":[],"stateMutability":"nonpayable","type":"function"}]

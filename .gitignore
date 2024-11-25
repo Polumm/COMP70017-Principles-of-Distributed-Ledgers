@@ -10,6 +10,8 @@ node_modules
 
 # Docs
 docs/
+deployed-address.txt
+submit-transaction.txt
 
 # Dotenv file
 .env

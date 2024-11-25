@@ -77,17 +77,24 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
 
     // 2.1 HR Manager Functions (registerEmployee)
     function registerEmployee(address employee, uint256 weeklyUsdSalary) external override onlyHRManager {
-        if (employees[employee].isActive) {
+        Employee storage emp = employees[employee];
+
+        if (emp.isActive) {
             revert EmployeeAlreadyRegistered();
         }
+
+        // Retain any unclaimed salary if the employee is being re-registered
+        uint256 retainedUnclaimedSalary = emp.unclaimedSalary;
+
         employees[employee] = Employee({
             weeklyUsdSalary: weeklyUsdSalary,
             employedSince: block.timestamp,
             terminatedAt: 0,
             isActive: true,
-            isEth: false,
-            unclaimedSalary: 0
+            isEth: emp.isEth ? emp.isEth : false, // Default to USDC unless previously set to ETH
+            unclaimedSalary: retainedUnclaimedSalary // Retain previously unclaimed salary
         });
+
         activeEmployeeCount++;
         emit EmployeeRegistered(employee, weeklyUsdSalary);
     }
