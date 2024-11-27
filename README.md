@@ -94,3 +94,4 @@ Ensure your system meets the following prerequisites:
    - **Key Features**:  
      - Ensures accuracy by verifying the price is non-zero.  
      - Scales the ETH/USD price to 18 decimals for precise calculations.
+
