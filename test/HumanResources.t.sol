@@ -760,29 +760,43 @@ contract HumanResourcesTest is Test {
         assertTrue(accruedSalary <= largeSalary, "Accrued salary should not overflow");
     }
 
-    // function testAccrualResetAfterRehire() public {
-    //     uint256 weeklySalary = 1_000 * 1e18;
+    function testAccrualResetAfterRehire() public {
+        uint256 weeklySalary = 1_000 * 1e18;
 
-    //     vm.prank(hrManagerAddress);
-    //     hr.registerEmployee(employee, weeklySalary);
+        // Step 1: Register the employee for the first time
+        vm.prank(hrManagerAddress);
+        hr.registerEmployee(employee, weeklySalary);
 
-    //     // Move time forward by 2 days
-    //     vm.warp(block.timestamp + 2 days);
+        // Step 2: Move time forward by 2 days (salary accrues)
+        vm.warp(block.timestamp + 2 days);
 
-    //     vm.prank(hrManagerAddress);
-    //     hr.terminateEmployee(employee);
+        // Step 3: Terminate the employee
+        vm.prank(hrManagerAddress);
+        hr.terminateEmployee(employee);
 
-    //     // Rehire employee after 3 days
-    //     vm.warp(block.timestamp + 3 days);
-    //     vm.prank(hrManagerAddress);
-    //     hr.registerEmployee(employee, weeklySalary);
+        // Step 4: Validate unclaimed salary is retained after termination
+        uint256 expectedUnclaimedUSD = ((weeklySalary * 2 days) / 7 days);
+        uint256 unclaimedSalary = hr.salaryAvailable(employee);
 
-    //     // Move time forward by 1 day
-    //     vm.warp(block.timestamp + 1 days);
+        assertEq(unclaimedSalary, expectedUnclaimedUSD / 1e12, "Unclaimed salary should be retained after termination");
 
-    //     uint256 expectedUSD = ((weeklySalary * 1 days) / 7 days) / 1e12;
-    //     uint256 accruedSalary = hr.salaryAvailable(employee);
+        // Step 5: Rehire the employee after 3 days
+        vm.warp(block.timestamp + 3 days);
+        vm.prank(hrManagerAddress);
+        hr.registerEmployee(employee, weeklySalary);
 
-    //     assertEq(accruedSalary, expectedUSD, "Accrued salary should reset and match expected after rehire");
-    // }
+        // Step 6: Move time forward by 1 day after rehire (new accrual starts)
+        vm.warp(block.timestamp + 1 days);
+
+        // Step 7: Validate that accrued salary includes unclaimed salary and new accruals
+        uint256 expectedNewAccruedUSD = unclaimedSalary + ((weeklySalary * 1 days) / 7 days) / 1e12;
+        uint256 accruedSalary = hr.salaryAvailable(employee);
+
+        assertApproxEqRel(
+            accruedSalary,
+            expectedNewAccruedUSD,
+            0.01e18
+        );
+    }
+    
 }

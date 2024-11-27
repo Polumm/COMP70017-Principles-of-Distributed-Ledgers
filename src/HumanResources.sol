@@ -70,11 +70,6 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
         _;
     }
 
-    // for the interface in IHumanResources
-    function hrManager() external view override returns (address) {
-        return _hrManager;
-    }
-
     // 2.1 HR Manager Functions (registerEmployee)
     function registerEmployee(address employee, uint256 weeklyUsdSalary) external override onlyHRManager {
         Employee storage emp = employees[employee];
@@ -184,7 +179,7 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
         uint256 amountInUSD = salaryAvailableInUSD(msg.sender);
 
         if (amountInUSD > 0) {
-            withdrawSalary(); // Direct internal call
+            withdrawSalary();
         }
 
         emp.isEth = !emp.isEth;
@@ -249,7 +244,7 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
     }
 
     // 5.2 View Function hrManager
-    function getHRManager() external view returns (address) {
+    function hrManager() external view override returns (address) {
         return _hrManager;
     }
 

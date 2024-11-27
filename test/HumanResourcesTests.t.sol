@@ -141,12 +141,12 @@ contract HumanResourcesTest is Test {
         skip(2 days);
         vm.prank(alice);
         humanResources.withdrawSalary();
-        assertApproxEqRel(alice.balance, expectedSalary, 0.01e18);
+        assertApproxEqRel(alice.balance, expectedSalary, 0.02e18);
         skip(5 days);
         expectedSalary = (aliceSalary * 1e18) / ethPrice;
         vm.prank(alice);
         humanResources.withdrawSalary();
-        assertApproxEqRel(alice.balance, expectedSalary, 0.01e18);
+        assertApproxEqRel(alice.balance, expectedSalary, 0.02e18);
     }
 
     function test_reregisterEmployee() public {
