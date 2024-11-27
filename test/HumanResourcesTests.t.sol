@@ -21,12 +21,9 @@ import {IChainlinkFeed} from "../src/interfaces/IChainlinkFeed.sol";
 contract HumanResourcesTest is Test {
     using stdStorage for StdStorage;
 
-    address internal constant _WETH =
-        0x4200000000000000000000000000000000000006;
-    address internal constant _USDC =
-        0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85;
-    IChainlinkFeed internal constant _ETH_USD_FEED =
-        IChainlinkFeed(0x13e3Ee699D1909E989722E753853AE30b17e08c5);
+    address internal constant _WETH = 0x4200000000000000000000000000000000000006;
+    address internal constant _USDC = 0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85;
+    IChainlinkFeed internal constant _ETH_USD_FEED = IChainlinkFeed(0x13e3Ee699D1909E989722E753853AE30b17e08c5);
 
     HumanResources public humanResources;
 
@@ -43,7 +40,7 @@ contract HumanResourcesTest is Test {
     function setUp() public {
         vm.createSelectFork(vm.envString("ETH_RPC_URL"));
         humanResources = HumanResources(payable(vm.envAddress("HR_CONTRACT")));
-        (, int256 answer, , , ) = _ETH_USD_FEED.latestRoundData();
+        (, int256 answer,,,) = _ETH_USD_FEED.latestRoundData();
         uint256 feedDecimals = _ETH_USD_FEED.decimals();
         ethPrice = uint256(answer) * 10 ** (18 - feedDecimals);
         hrManager = humanResources.hrManager();
@@ -55,11 +52,7 @@ contract HumanResourcesTest is Test {
 
         uint256 currentTime = block.timestamp;
 
-        (
-            uint256 weeklySalary,
-            uint256 employedSince,
-            uint256 terminatedAt
-        ) = humanResources.getEmployeeInfo(alice);
+        (uint256 weeklySalary, uint256 employedSince, uint256 terminatedAt) = humanResources.getEmployeeInfo(alice);
         assertEq(weeklySalary, aliceSalary);
         assertEq(employedSince, currentTime);
         assertEq(terminatedAt, 0);
@@ -68,8 +61,7 @@ contract HumanResourcesTest is Test {
 
         _registerEmployee(bob, bobSalary);
 
-        (weeklySalary, employedSince, terminatedAt) = humanResources
-            .getEmployeeInfo(bob);
+        (weeklySalary, employedSince, terminatedAt) = humanResources.getEmployeeInfo(bob);
         assertEq(humanResources.getActiveEmployeeCount(), 2);
 
         assertEq(weeklySalary, bobSalary);
@@ -86,10 +78,7 @@ contract HumanResourcesTest is Test {
     function test_salaryAvailable_usdc() public {
         _registerEmployee(alice, aliceSalary);
         skip(2 days);
-        assertEq(
-            humanResources.salaryAvailable(alice),
-            ((aliceSalary / 1e12) * 2) / 7
-        );
+        assertEq(humanResources.salaryAvailable(alice), ((aliceSalary / 1e12) * 2) / 7);
 
         skip(5 days);
         assertEq(humanResources.salaryAvailable(alice), aliceSalary / 1e12);
@@ -101,18 +90,10 @@ contract HumanResourcesTest is Test {
         vm.prank(alice);
         humanResources.switchCurrency();
         skip(2 days);
-        assertApproxEqRel(
-            humanResources.salaryAvailable(alice),
-            expectedSalary,
-            0.01e18
-        );
+        assertApproxEqRel(humanResources.salaryAvailable(alice), expectedSalary, 0.01e18);
         skip(5 days);
         expectedSalary = (aliceSalary * 1e18) / ethPrice;
-        assertApproxEqRel(
-            humanResources.salaryAvailable(alice),
-            expectedSalary,
-            0.01e18
-        );
+        assertApproxEqRel(humanResources.salaryAvailable(alice), expectedSalary, 0.01e18);
     }
 
     function test_withdrawSalary_usdc() public {
@@ -121,10 +102,7 @@ contract HumanResourcesTest is Test {
         skip(2 days);
         vm.prank(alice);
         humanResources.withdrawSalary();
-        assertEq(
-            IERC20(_USDC).balanceOf(address(alice)),
-            ((aliceSalary / 1e12) * 2) / 7
-        );
+        assertEq(IERC20(_USDC).balanceOf(address(alice)), ((aliceSalary / 1e12) * 2) / 7);
 
         skip(5 days);
         vm.prank(alice);
@@ -161,12 +139,8 @@ contract HumanResourcesTest is Test {
         skip(5 days);
         vm.prank(alice);
         humanResources.withdrawSalary();
-        uint256 expectedSalary = ((aliceSalary * 2) / 7) +
-            ((aliceSalary * 2 * 5) / 7);
-        assertEq(
-            IERC20(_USDC).balanceOf(address(alice)),
-            expectedSalary / 1e12
-        );
+        uint256 expectedSalary = ((aliceSalary * 2) / 7) + ((aliceSalary * 2 * 5) / 7);
+        assertEq(IERC20(_USDC).balanceOf(address(alice)), expectedSalary / 1e12);
     }
 
     function _registerEmployee(address employeeAddress, uint256 salary) public {
@@ -174,15 +148,7 @@ contract HumanResourcesTest is Test {
         humanResources.registerEmployee(employeeAddress, salary);
     }
 
-    function _mintTokensFor(
-        address token_,
-        address account_,
-        uint256 amount_
-    ) internal {
-        stdstore
-            .target(token_)
-            .sig(IERC20(token_).balanceOf.selector)
-            .with_key(account_)
-            .checked_write(amount_);
+    function _mintTokensFor(address token_, address account_, uint256 amount_) internal {
+        stdstore.target(token_).sig(IERC20(token_).balanceOf.selector).with_key(account_).checked_write(amount_);
     }
 }

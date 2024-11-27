@@ -792,11 +792,6 @@ contract HumanResourcesTest is Test {
         uint256 expectedNewAccruedUSD = unclaimedSalary + ((weeklySalary * 1 days) / 7 days) / 1e12;
         uint256 accruedSalary = hr.salaryAvailable(employee);
 
-        assertApproxEqRel(
-            accruedSalary,
-            expectedNewAccruedUSD,
-            0.01e18
-        );
+        assertApproxEqRel(accruedSalary, expectedNewAccruedUSD, 0.01e18);
     }
-    
 }
