@@ -205,7 +205,7 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
         ISwapRouter.ExactInputSingleParams memory params = ISwapRouter.ExactInputSingleParams({
             tokenIn: USDC_ADDRESS,
             tokenOut: WETH_ADDRESS,
-            fee: 3000, // Pool fee (0.3%)
+            fee: 500,
             recipient: address(this),
             deadline: deadline,
             amountIn: usdcAmount,
