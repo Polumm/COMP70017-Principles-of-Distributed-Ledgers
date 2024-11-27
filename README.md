@@ -1,18 +1,20 @@
-# 1 COMP70017 Principles of Distributed Ledgers
+# COMP70017 Principles of Distributed Ledgers
 
 ---
 
+This is the coursework project for COMP70017: Principles of Distributed Ledgers.
+
 For your convenience in testing, you can refer to the results of the [GitHub Actions](https://github.com/Polumm/COMP70017-Principles-of-Distributed-Ledgers/actions) automated tests. I have configured the necessary environment variables and all existing test units, which should produce results consistent with those you run locally.
 
-## 1.1 Installation and Testing Guide
+## 1 Installation and Testing Guide
 
-### 1.1.1 **System Requirements**
+### 1.1 **System Requirements**
 
 Ensure your system meets the following prerequisites:
 - **Node.js and npm**: Required for managing project dependencies.
 - **Forge**: A smart contract development tool.
 
-### 1.1.2 **Steps to Install and Test**
+### 1.2 **Steps to Install and Test**
 
 1. **Clone the Repository and Navigate to the Project Directory**  
    Run the following commands in your terminal:
@@ -41,9 +43,9 @@ Ensure your system meets the following prerequisites:
 
 ---
 
-## 1.2 **Implementation of `IHumanResources`**
+## 2 **Implementation of `IHumanResources`**
 
-### 1.2.1 **HR Manager Functions**
+### 2.1 **HR Manager Functions**
 Both functions are restricted to authorized HR Manager addresses through the `onlyHRManager` modifier, ensuring proper control and security.
 1. **`registerEmployee(address employee, uint256 weeklyUsdSalary)`**  
    - Registers a new employee with a specified weekly salary.  
@@ -65,7 +67,7 @@ Both functions are restricted to authorized HR Manager addresses through the `on
 	    - **Currency Preference:** The employee's `isEth` (currency preference) remains unchanged during termination.
 	    - **Event Emission:** Emits the `EmployeeTerminated` event to record the termination.
 
-### 1.2.2 **Employee Functions**
+### 2.2 **Employee Functions**
 1. **`withdrawSalary()`**  
    - Allows employees to withdraw their accumulated salary in their preferred currency (USDC or ETH).  
    - **Process**:  
@@ -98,7 +100,7 @@ Both functions are restricted to authorized HR Manager addresses through the `on
 		4. **Event Emission:**  
 		    The `SalaryWithdrawn` event is emitted during the automatic withdrawal, followed by the `CurrencySwitched` event.
 
-### 1.2.3 **View Functions**
+### 2.3 **View Functions**
 1. **`salaryAvailable(address employee)`**  
    - Returns the salary available for withdrawal in the employee's preferred currency.  
    - **Process**: Uses Chainlink oracle to convert USD-based salary to ETH if necessary.
@@ -121,7 +123,7 @@ Both functions are restricted to authorized HR Manager addresses through the `on
 4. **`getEmployeeInfo(address employee)`**  
    - Provides an employee's details, including salary, start date, and termination date (if applicable). If the employee does not exist (`employedSince == 0`), the function returns `(0, 0, 0)`. This avoids unnecessary reverts and ensures consistent output for invalid queries.
 
-### 1.2.4 **Integration of AMM and Oracle**
+### 2.4 **Integration of AMM and Oracle**
 
 1. **AMM (Uniswap)**  
    - Used to swap USDC for ETH when employees choose ETH as their payout currency.  
