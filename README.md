@@ -2,6 +2,8 @@
 
 ---
 
+For your convenience in testing, you can refer to the results of the [GitHub Actions](https://github.com/Polumm/COMP70017-Principles-of-Distributed-Ledgers/actions) automated tests. I have configured the necessary environment variables and all existing test units, which should produce results consistent with those you run locally.
+
 ## 1.1 Installation and Testing Guide
 
 ### 1.1.1 **System Requirements**
