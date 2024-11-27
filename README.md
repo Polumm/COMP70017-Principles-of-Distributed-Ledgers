@@ -118,7 +118,7 @@ Both functions are restricted to authorized HR Manager addresses through the `on
 		    Validates that the price feed returns a positive price before proceeding with calculations to prevent invalid or corrupted data from causing errors.
 2. **`hrManager()`**  
    - Returns the HR Manager's address.
-3.  **`getActiveEmployeeCount()`**  
+3. **`getActiveEmployeeCount()`**  
    - Returns the total number of active employees.
 4. **`getEmployeeInfo(address employee)`**  
    - Provides an employee's details, including salary, start date, and termination date (if applicable). If the employee does not exist (`employedSince == 0`), the function returns `(0, 0, 0)`. This avoids unnecessary reverts and ensures consistent output for invalid queries.
