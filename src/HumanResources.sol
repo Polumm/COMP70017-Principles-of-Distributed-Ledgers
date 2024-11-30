@@ -136,13 +136,12 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
                 emp.employedSince = block.timestamp;
 
                 // Transfer ETH to employee
-                (bool success, ) = msg.sender.call{value: ethAmount}("");
+                (bool success,) = msg.sender.call{value: ethAmount}("");
                 require(success, "ETH transfer failed");
                 emit SalaryWithdrawn(msg.sender, true, ethAmount);
-            } else {
-                // Do not reset accruals; salary continues to accumulate
-                // No event custom emitted as supplementary material required
             }
+            // Do not reset accruals; salary continues to accumulate
+            // No event custom emitted as supplementary material required
         } else {
             uint256 usdcAmount = amountInUSD / 1e12; // Convert USD (18 decimals) to USDC (6 decimals)
             if (usdcAmount > 0) {
@@ -153,13 +152,11 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
                 // Transfer USDC to employee
                 require(USDC.transfer(msg.sender, usdcAmount), "USDC transfer failed");
                 emit SalaryWithdrawn(msg.sender, false, usdcAmount);
-            } else {
-                // Do not reset accruals; salary continues to accumulate
-                // No event custom emitted as supplementary material required
             }
+            // Do not reset accruals; salary continues to accumulate
+            // No event custom emitted as supplementary material required
         }
     }
-
 
     // 3.3 Switching Preferred Currency
     modifier onlyActiveEmployee() {
