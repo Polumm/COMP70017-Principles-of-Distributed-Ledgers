@@ -22,10 +22,10 @@ contract HumanResourcesTest is Test {
     AggregatorV3Interface priceFeed;
 
     // Constants for addresses on Optimism
-    address constant USDC_ADDRESS = 0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85; // USDC on Optimism
-    address constant WETH_ADDRESS = 0x4200000000000000000000000000000000000006; // WETH on Optimism
-    address constant SWAP_ROUTER_ADDRESS = 0xE592427A0AEce92De3Edee1F18E0157C05861564; // Uniswap V3 Swap Router
-    address constant CHAINLINK_ORACLE_ADDRESS = 0x13e3Ee699D1909E989722E753853AE30b17e08c5; // ETH/USD Price Feed
+    address internal constant USDC_ADDRESS = 0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85; // USDC on Optimism
+    address internal constant WETH_ADDRESS = 0x4200000000000000000000000000000000000006; // WETH on Optimism
+    address internal constant SWAP_ROUTER_ADDRESS = 0xE592427A0AEce92De3Edee1F18E0157C05861564; // Uniswap V3 Swap Router
+    address internal constant CHAINLINK_ORACLE_ADDRESS = 0x13e3Ee699D1909E989722E753853AE30b17e08c5; // ETH/USD Price Feed
     uint256 forkId;
 
     // Events from the IHumanResources interface
@@ -36,7 +36,7 @@ contract HumanResourcesTest is Test {
 
     function setUp() public {
         // Create and select a fork of Optimism Mainnet
-        string memory forkUrl = "https://mainnet.optimism.io";
+        string memory forkUrl = (vm.envString("ETH_RPC_URL"));
         forkId = vm.createFork(forkUrl);
         vm.selectFork(forkId);
 

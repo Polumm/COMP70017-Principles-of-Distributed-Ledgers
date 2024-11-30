@@ -2,9 +2,11 @@
 
 ---
 
+**by Chujia Song (cs824)**
+
 This is the coursework project for COMP70017: Principles of Distributed Ledgers.
 
-For your convenience in testing, you can refer to the results of the [GitHub Actions](https://github.com/Polumm/COMP70017-Principles-of-Distributed-Ledgers/actions) automated tests. I have configured the necessary environment variables and all existing test units, which should produce results consistent with those you run locally.
+For your convenience in testing, you can refer to the results of the [GitHub Actions](https://github.com/Polumm/COMP70017-Principles-of-Distributed-Ledgers/actions) automated tests, which include `HumanResourcesTests.t.sol` provided by the professors and the self-implemented `HumanResources.t.sol` (keep the repository private until after the coursework deadline). I have configured the necessary environment variables and included all existing test units, which should produce results consistent with those you run locally.
 
 ## 1 Installation and Testing Guide
 
@@ -64,7 +66,7 @@ Both functions are restricted to authorized HR Manager addresses through the `on
 	    - **Employee State Check:** Ensures the employee is actively registered before proceeding with termination.
 	    - **Salary Preservation:** Calculates the unclaimed salary using the `salaryAvailableInUSD(employee)` function and updates the `unclaimedSalary` field.
 	    - **Prevent Accrual:** Stops further salary accumulation by setting both `employedSince` and `terminatedAt` to the current timestamp (`block.timestamp`).
-	    - **Currency Preference:** The employee's `isEth` (currency preference) remains unchanged during termination.
+	    - **Currency Preference:** The employee's `isEth` is reset to USDC (the default) when an employee is re-registered.
 	    - **Event Emission:** Emits the `EmployeeTerminated` event to record the termination.
 
 ### 2.2 **Employee Functions**

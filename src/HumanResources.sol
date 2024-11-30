@@ -86,7 +86,7 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
             employedSince: block.timestamp,
             terminatedAt: 0,
             isActive: true,
-            isEth: emp.isEth ? emp.isEth : false, // Default to USDC unless previously set to ETH
+            isEth: false, // Default to USDC
             unclaimedSalary: retainedUnclaimedSalary // Retain previously unclaimed salary
         });
 
@@ -123,9 +123,6 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
     // If salaryAvailableInUSD > 0 but the converted usdcAmount is 0 (due to low salary),
     // do not reset unclaimedSalary. This ensures fairness for employees with low weekly salaries
     // or short employment periods, allowing their salary to accumulate for future withdrawals.
-
-    event NoSalaryTransferred(address indexed employee, string reason);
-
     function withdrawSalary() public override onlyEmployee nonReentrant {
         Employee storage emp = employees[msg.sender];
         uint256 amountInUSD = salaryAvailableInUSD(msg.sender);
@@ -139,12 +136,12 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
                 emp.employedSince = block.timestamp;
 
                 // Transfer ETH to employee
-                (bool success,) = msg.sender.call{value: ethAmount}("");
+                (bool success, ) = msg.sender.call{value: ethAmount}("");
                 require(success, "ETH transfer failed");
                 emit SalaryWithdrawn(msg.sender, true, ethAmount);
             } else {
                 // Do not reset accruals; salary continues to accumulate
-                emit NoSalaryTransferred(msg.sender, "No ETH transferred due to insufficient amount");
+                // No event custom emitted as supplementary material required
             }
         } else {
             uint256 usdcAmount = amountInUSD / 1e12; // Convert USD (18 decimals) to USDC (6 decimals)
@@ -158,10 +155,11 @@ contract HumanResources is IHumanResources, ReentrancyGuard {
                 emit SalaryWithdrawn(msg.sender, false, usdcAmount);
             } else {
                 // Do not reset accruals; salary continues to accumulate
-                emit NoSalaryTransferred(msg.sender, "No USDC transferred due to insufficient amount");
+                // No event custom emitted as supplementary material required
             }
         }
     }
+
 
     // 3.3 Switching Preferred Currency
     modifier onlyActiveEmployee() {
